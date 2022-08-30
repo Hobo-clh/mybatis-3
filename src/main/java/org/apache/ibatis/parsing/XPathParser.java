@@ -45,9 +45,11 @@ import org.xml.sax.SAXParseException;
  * @author Kazuki Shimizu
  */
 public class XPathParser {
-
+  // 代表要解析的整个xml文件
   private final Document document;
+    // 是否开启验证
   private boolean validation;
+
   private EntityResolver entityResolver;
   private Properties variables;
   private XPath xpath;

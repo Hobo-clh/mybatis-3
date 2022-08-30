@@ -53,14 +53,17 @@ import org.apache.ibatis.session.Configuration;
  * @author Kazuki Shimizu
  */
 public final class TypeHandlerRegistry {
-
+  // JDBC类型与对应类型处理器的映射
   private final Map<JdbcType, TypeHandler<?>> jdbcTypeHandlerMap = new EnumMap<>(JdbcType.class);
+  // java类型与 jdbcTypeHandlerMap的映射
   private final Map<Type, Map<JdbcType, TypeHandler<?>>> typeHandlerMap = new ConcurrentHashMap<>();
+  // 未知类型处理器
   private final TypeHandler<Object> unknownTypeHandler;
+  // 键为TypeHandler.getClass(), 值为typeHandler,存储了所有的类型处理器
   private final Map<Class<?>, TypeHandler<?>> allTypeHandlersMap = new HashMap<>();
-
+  // 空的 Map<JdbcType, TypeHandler<?>>,表示该Java类型没有对应的Map<JdbcType, TypeHandler<?>>
   private static final Map<JdbcType, TypeHandler<?>> NULL_TYPE_HANDLER_MAP = Collections.emptyMap();
-
+  // 默认的枚举类型处理器
   private Class<? extends TypeHandler> defaultEnumTypeHandler = EnumTypeHandler.class;
 
   /**
@@ -231,9 +234,12 @@ public final class TypeHandlerRegistry {
 
   @SuppressWarnings("unchecked")
   private <T> TypeHandler<T> getTypeHandler(Type type, JdbcType jdbcType) {
+    // todo
     if (ParamMap.class.equals(type)) {
       return null;
     }
+
+    // 根据java类型获取 jdbcHandlerMap,再根据jdbcType找到typeHandler
     Map<JdbcType, TypeHandler<?>> jdbcHandlerMap = getJdbcHandlerMap(type);
     TypeHandler<?> handler = null;
     if (jdbcHandlerMap != null) {
@@ -243,10 +249,12 @@ public final class TypeHandlerRegistry {
       }
       if (handler == null) {
         // #591
+        // 如果jdbcHandlerMap 只有一个类型处理器,就取出他
         handler = pickSoleHandler(jdbcHandlerMap);
       }
     }
     // type drives generics here
+    // 返回找到的类型处理器
     return (TypeHandler<T>) handler;
   }
 

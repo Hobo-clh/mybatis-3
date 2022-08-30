@@ -31,9 +31,11 @@ import org.w3c.dom.NodeList;
  * @author Clinton Begin
  */
 public class XNode {
-
+  // 表示是xml中的一个节点
   private final Node node;
+  // 节点名
   private final String name;
+  // 节点体
   private final String body;
   private final Properties attributes;
   private final Properties variables;

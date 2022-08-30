@@ -94,6 +94,7 @@ public final class LogFactory {
   private static void tryImplementation(Runnable runnable) {
     if (logConstructor == null) {
       try {
+        // 直接调用run方法不会触发多线程
         runnable.run();
       } catch (Throwable t) {
         // ignore

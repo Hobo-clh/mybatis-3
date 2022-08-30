@@ -274,6 +274,7 @@ public class ResolverUtil<T> {
   /**
    * Add the class designated by the fully qualified class name provided to the set of
    * resolved classes if and only if it is approved by the Test supplied.
+   * 判断一个类文件是否满足条件.如果满足,则记录下来
    *
    * @param test the test used to determine if the class matches
    * @param fqn the fully qualified name of a class
@@ -286,8 +287,9 @@ public class ResolverUtil<T> {
       if (log.isDebugEnabled()) {
         log.debug("Checking to see if class " + externalName + " matches criteria [" + test + "]");
       }
-
+      // 加载类文件
       Class<?> type = loader.loadClass(externalName);
+      // 执行测试,通过则记录到matches属性中
       if (test.matches(type)) {
         matches.add((Class<T>) type);
       }
